@@ -133,20 +133,44 @@ Update your backend environment variables in Vercel:
 FRONTEND_URL=https://your-actual-netlify-domain.netlify.app
 ```
 
-## 🔄 Step 4: Seed Database
+## 🔄 Step 4: Initialize Database
 
-After both deployments are complete:
+After both deployments are complete, you need to initialize your database with admin credentials and default data.
 
-1. **Access Your Backend API**
-   - Go to `https://your-backend-url.vercel.app/api/seed`
-   - This will create the admin user
+### Option 1: Automatic Initialization (Recommended)
 
-2. **Migrate Data (Optional)**
-   If you want to migrate existing data, you can run the migration script locally:
-   ```bash
-   cd backend
-   MONGODB_URI=your-production-uri npm run migrate
-   ```
+1. **Initialize via API endpoint**
+   - Visit: `https://your-backend-url.vercel.app/api/init/init`
+   - Use POST method (or use a tool like Postman)
+   - This will create admin user and default personal information
+
+2. **Check Status**
+   - Visit: `https://your-backend-url.vercel.app/api/init/status`
+   - Verify initialization was successful
+
+### Option 2: Manual Script Execution
+
+Run the initialization script with your production database:
+```bash
+cd backend
+MONGODB_URI=your-production-uri npm run init
+```
+
+### Option 3: Local Migration (Advanced)
+
+If you want to migrate existing data from JSON files:
+```bash
+cd backend
+MONGODB_URI=your-production-uri npm run migrate
+```
+
+### 🔐 Default Credentials
+
+After initialization, you can login with:
+- **Email**: From `ADMIN_EMAIL` environment variable (or admin@example.com)
+- **Password**: From `ADMIN_PASSWORD` environment variable (or SecurePassword123!)
+
+**⚠️ Important**: Change the default password immediately after first login!
 
 ## ✅ Step 5: Verify Deployment
 

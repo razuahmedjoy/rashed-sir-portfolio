@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
 import contentRoutes from './routes/content.js';
+import initRoutes from './routes/init.js';
 
 // Load environment variables
 dotenv.config();
@@ -41,6 +42,9 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Serve static files (for init page)
+app.use(express.static('public'));
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rashed_sir_website')
   .then(() => console.log('✅ Connected to MongoDB'))
@@ -50,6 +54,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rashed_si
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/content', contentRoutes);
+app.use('/api/init', initRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
